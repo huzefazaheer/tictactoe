@@ -1,2 +1,3 @@
 # tictactoe
-A game of tiktactoe created for The Odin Project
+
+A game of tictactoe created for The Odin Project
