@@ -17,7 +17,7 @@ body {
 
 h1 {
   margin-top: 10vh;
-  font-weight: 200;
+  font-weight: 400;
   font-size: 3rem;
 }
 
@@ -36,4 +36,9 @@ h1 {
 
 .box {
   border: black solid 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  font-weight: 300;
 }
