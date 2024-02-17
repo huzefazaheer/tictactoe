@@ -4,7 +4,7 @@ let turn = 0;
 function updateGameBoard(posX, posY, divNumber) {
   let div = gameBoard.childNodes[divNumber];
   if (div.innerHTML == "") {
-    let marker = "X";
+    let marker = "x";
     console.log(turn % 2);
     if (turn % 2 == 0) {
       marker = "X";
