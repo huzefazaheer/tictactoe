@@ -1,6 +1,11 @@
 const gameBoard = document.querySelector(".gameboard");
+const resultScreen = document.querySelector(".result");
 
 let turn = 0;
+function makeBoard() {
+  return (board = []);
+}
+
 function updateGameBoard(posX, posY, divNumber) {
   let div = gameBoard.childNodes[divNumber];
   if (div.innerHTML == "") {
@@ -13,6 +18,9 @@ function updateGameBoard(posX, posY, divNumber) {
     }
     turn++;
     div.innerText = marker;
+  }
+  if (turn == 9) {
+    resultScreen.style.display = "flex";
   }
 }
 
