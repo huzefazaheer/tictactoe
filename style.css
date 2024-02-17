@@ -42,3 +42,19 @@ h1 {
   font-size: 4rem;
   font-weight: 300;
 }
+
+.top {
+  border-top: none;
+}
+
+.bottom {
+  border-bottom: none;
+}
+
+.left {
+  border-left: none;
+}
+
+.right {
+  border-right: none;
+}
