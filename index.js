@@ -1,9 +1,24 @@
 const gameBoard = document.querySelector(".gameboard");
 const resultScreen = document.querySelector(".result");
+const btn_playAgain = document.querySelector("#playagain");
 
 let turn = 0;
 function makeBoard() {
   return (board = []);
+}
+
+function clearBoard() {
+  gameBoard.childNodes.forEach((node) => {
+    node.innerHTML = "";
+  });
+}
+
+function toggleResultScreen() {
+  if (resultScreen.style.display == "") {
+    resultScreen.style.display = "flex";
+  } else {
+    resultScreen.style.display = "";
+  }
 }
 
 function updateGameBoard(posX, posY, divNumber) {
@@ -20,7 +35,7 @@ function updateGameBoard(posX, posY, divNumber) {
     div.innerText = marker;
   }
   if (turn == 9) {
-    resultScreen.style.display = "flex";
+    toggleResultScreen();
   }
 }
 
@@ -29,4 +44,10 @@ for (let i = 0; i < gameBoard.childNodes.length; i++) {
   node.addEventListener("click", (e) => {
     updateGameBoard(1, 1, i);
   });
+}
+
+function playAgain() {
+  clearBoard();
+  toggleResultScreen();
+  turn = 0;
 }

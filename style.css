@@ -24,6 +24,7 @@ body {
   height: 100vh;
   display: flex;
   background-color: whitesmoke;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   display: none;
@@ -71,4 +72,22 @@ h1 {
 
 .right {
   border-right: none;
+}
+
+button {
+  padding: 1rem 2rem;
+  background-color: var(--color-background);
+  border: 2px rgb(71, 71, 71) solid;
+  color: rgb(71, 71, 71);
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: rgb(71, 71, 71);
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+button:active {
+  transform: scale(1.05);
 }
