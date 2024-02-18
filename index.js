@@ -9,30 +9,56 @@ function makeBoard() {
 
   let turn = 0;
 
-  function getTurn() {
+  function getPlayerTurn() {
     let player;
     if (turn % 2 == 0) {
       player = player1;
     } else {
       player = player2;
     }
-    turn++;
     return player;
   }
 
   function playTurn(pos) {
-    player = getTurn();
-    fields[pos] = player.marker;
-    console.log(fields);
-    document.getElementById(pos).innerText = player.marker;
+    if (turn != 8) {
+      player = getPlayerTurn();
+      fields[pos] = player.getMarker();
+      document.getElementById(pos).innerText = player.getMarker();
+      checkWinner(pos);
+    } else {
+      toggleResultScreen();
+    }
+
+    incrementTurn();
   }
 
-  return { playTurn };
+  function checkWinner(pos) {
+    let marker = getPlayerTurn().getMarker();
+    console.log(pos, marker);
+    if (fields[pos + 1] == marker && fields[pos + 2] == marker) {
+      console.log(marker + " has won");
+    }
+  }
+
+  function incrementTurn() {
+    turn++;
+  }
+
+  function resetTurn() {
+    turn = 0;
+  }
+
+  return { playTurn, resetTurn, checkWinner };
 }
 
 function makePlayer(name, marker) {
   let winCount = 0;
-  return { name, marker, winCount };
+
+  function getMarker() {
+    return marker;
+  }
+
+  return { name, winCount, getMarker };
 }
 
 function clearBoard() {
@@ -52,7 +78,7 @@ function toggleResultScreen() {
 function playAgain() {
   clearBoard();
   toggleResultScreen();
-  turn = 0;
+  gameBoard.resetTurn();
 }
 
 let gameBoard = makeBoard();
@@ -60,15 +86,15 @@ let gameBoard = makeBoard();
 // function updatediv_GameBoard(posX, posY, divNumber) {
 //   let div = div_gameBoard.childNodes[divNumber];
 //   if (div.innerHTML == "") {
-//     let marker = "x";
+//     let getMarker() = "x";
 //     console.log(turn % 2);
 //     if (turn % 2 == 0) {
-//       marker = "X";
+//       getMarker() = "X";
 //     } else {
-//       marker = "O";
+//       getMarker() = "O";
 //     }
 //     turn++;
-//     div.innerText = marker;
+//     div.innerText = getMarker();
 //   }
 //   if (turn == 9) {
 //     toggleResultScreen();
@@ -78,7 +104,6 @@ let gameBoard = makeBoard();
 for (let i = 0; i < div_gameBoard.childNodes.length; i++) {
   let node = div_gameBoard.childNodes[i];
   node.addEventListener("click", (e) => {
-    // updatediv_GameBoard(1, 1, i);
     gameBoard.playTurn(node.id);
   });
 }
