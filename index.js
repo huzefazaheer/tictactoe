@@ -1,13 +1,15 @@
 const div_gameBoard = document.querySelector(".gameboard");
 const resultScreen = document.querySelector(".result");
 const btn_playAgain = document.querySelector("#playagain");
+const txt_winner = document.querySelector(".winner");
 
 function makeBoard() {
   let fields = ["", "", "", "", "", "", "", "", ""];
-  let player1 = makePlayer("Huzefa", "X");
-  let player2 = makePlayer("Ibrahim", "O");
+  let player1 = makePlayer("Alex", "X");
+  let player2 = makePlayer("Adam", "O");
 
   let turn = 0;
+  let winner = null;
 
   function getPlayerTurn() {
     let player;
@@ -20,23 +22,59 @@ function makeBoard() {
   }
 
   function playTurn(pos) {
-    if (turn != 8) {
+    if (turn != 8 && winner == null) {
       player = getPlayerTurn();
-      fields[pos] = player.getMarker();
-      document.getElementById(pos).innerText = player.getMarker();
-      checkWinner(pos);
+      if (fields[pos] == "") {
+        fields[pos] = player.getMarker();
+        document.getElementById(pos).innerText = player.getMarker();
+        return true;
+      }
+      return false;
     } else {
       toggleResultScreen();
     }
-
-    incrementTurn();
   }
 
-  function checkWinner(pos) {
+  function checkWinner() {
     let marker = getPlayerTurn().getMarker();
-    console.log(pos, marker);
-    if (fields[pos + 1] == marker && fields[pos + 2] == marker) {
-      console.log(marker + " has won");
+
+    for (let i = 0; i < 9; i++) {
+      // check for wins in rows
+      if (i % 3 == 0) {
+        if (fields[i] == marker && fields[i + 1] == marker) {
+          if (fields[i + 2] == marker) {
+            winner = getPlayerTurn();
+            return winner;
+          }
+        }
+      }
+      // check for wins in columns
+      if (i < 3) {
+        if (fields[i] == marker && fields[i + 3] == marker) {
+          if (fields[i + 6] == marker) {
+            winner = getPlayerTurn();
+            return winner;
+          }
+        }
+      }
+      // check for wins in diagonals
+      if (i == 0 || i == 2) {
+        if (i == 0) {
+          if (fields[i] == marker && fields[i + 4] == marker) {
+            if (fields[i + 8] == marker) {
+              winner = getPlayerTurn();
+              return winner;
+            }
+          }
+        } else {
+          if (fields[i] == marker && fields[i + 2] == marker) {
+            if (fields[i + 4] == marker) {
+              winner = getPlayerTurn();
+              return winner;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -48,7 +86,28 @@ function makeBoard() {
     turn = 0;
   }
 
-  return { playTurn, resetTurn, checkWinner };
+  function resetBoard() {
+    fields = ["", "", "", "", "", "", "", "", ""];
+    winner = null;
+  }
+
+  function getWinningPlayer() {
+    if (winner == null) {
+      return "Draw";
+    } else {
+      return winner.name + " has won";
+    }
+  }
+
+  return {
+    playTurn,
+    resetTurn,
+    checkWinner,
+    incrementTurn,
+    getWinningPlayer,
+    turn,
+    resetBoard,
+  };
 }
 
 function makePlayer(name, marker) {
@@ -70,6 +129,7 @@ function clearBoard() {
 function toggleResultScreen() {
   if (resultScreen.style.display == "") {
     resultScreen.style.display = "flex";
+    txt_winner.innerText = gameBoard.getWinningPlayer();
   } else {
     resultScreen.style.display = "";
   }
@@ -77,33 +137,22 @@ function toggleResultScreen() {
 
 function playAgain() {
   clearBoard();
-  toggleResultScreen();
   gameBoard.resetTurn();
+  gameBoard.resetBoard();
+  toggleResultScreen();
 }
 
 let gameBoard = makeBoard();
 
-// function updatediv_GameBoard(posX, posY, divNumber) {
-//   let div = div_gameBoard.childNodes[divNumber];
-//   if (div.innerHTML == "") {
-//     let getMarker() = "x";
-//     console.log(turn % 2);
-//     if (turn % 2 == 0) {
-//       getMarker() = "X";
-//     } else {
-//       getMarker() = "O";
-//     }
-//     turn++;
-//     div.innerText = getMarker();
-//   }
-//   if (turn == 9) {
-//     toggleResultScreen();
-//   }
-// }
-
 for (let i = 0; i < div_gameBoard.childNodes.length; i++) {
   let node = div_gameBoard.childNodes[i];
   node.addEventListener("click", (e) => {
-    gameBoard.playTurn(node.id);
+    if (gameBoard.playTurn(node.id)) {
+      if (gameBoard.checkWinner() != null) {
+        toggleResultScreen();
+      } else {
+        gameBoard.incrementTurn();
+      }
+    }
   });
 }
