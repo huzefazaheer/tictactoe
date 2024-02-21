@@ -3,10 +3,13 @@ const resultScreen = document.querySelector(".result");
 const btn_playAgain = document.querySelector("#playagain");
 const txt_winner = document.querySelector(".winner");
 
+//TODO:Add option to add name
+
+let player1 = makePlayer(prompt("Player 1, enter your name"), "X");
+let player2 = makePlayer(prompt("Player 2, enter your name"), "O");
+
 function makeBoard() {
   let fields = ["", "", "", "", "", "", "", "", ""];
-  let player1 = makePlayer("Alex", "X");
-  let player2 = makePlayer("Adam", "O");
 
   let turn = 0;
   let winner = null;
